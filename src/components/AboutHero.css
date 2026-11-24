@@ -1,0 +1,257 @@
+@import url("https://fonts.googleapis.com/css2?family=Anton&family=Caveat:wght@500&display=swap");
+
+.ab {
+  --ink: #fff;
+  --lime: #d6ff32;
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --mx: 0;
+  --my: 0;
+
+  position: relative;
+  min-height: 100vh;
+  min-height: 100svh;
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  align-items: center;
+  gap: clamp(1rem, 3vw, 3rem);
+  padding: clamp(5.5rem, 12vh, 8rem) clamp(1.2rem, 4vw, 4rem) clamp(2rem, 6vh, 4rem);
+  overflow: hidden;
+  background: #000;
+  color: var(--ink);
+  font-family: "Times New Roman", Times, serif;
+}
+
+/* ---------- Headline ---------- */
+.ab__copy { position: relative; z-index: 3; }
+
+.ab__title {
+  margin: 0;
+  font-family: "Anton", Impact, "Arial Narrow", sans-serif;
+  font-weight: 400;
+  font-size: clamp(3.4rem, 8.4vw, 9rem);
+  line-height: 1.04;
+  text-transform: uppercase;
+  letter-spacing: 0.005em;
+}
+.ab__line { display: block; overflow: hidden; padding-top: 0.04em; }
+.ab__line > span {
+  display: block;
+  transform: translateY(112%);
+  transition: transform 1.2s var(--ease);
+  transition-delay: calc(0.1s + var(--i) * 0.1s);
+}
+.is-in .ab__line > span { transform: none; }
+
+/* Arabic "who am I?" — grey, tilted, overlaps the last line */
+.ab__ar {
+  margin: -0.35em 0 0 0.1em;
+  width: max-content;
+  font-family: "Jameel Noori", "Noto Nastaliq Urdu", serif;
+  font-size: clamp(3rem, 7.4vw, 8rem);
+  line-height: 1.5;
+  color: #7d7d7d;
+  transform: rotate(-6deg);
+  transform-origin: left center;
+  position: relative;
+  z-index: 2;
+}
+.ab__ar > span {
+  display: block;
+  clip-path: inset(0 0 0 100%);
+  filter: blur(6px);
+  transition: clip-path 1.4s 0.7s var(--ease), filter 1.4s 0.7s var(--ease);
+}
+.is-in .ab__ar > span { clip-path: inset(0 0 0 0); filter: blur(0); }
+
+/* ---------- Visual ---------- */
+.ab__visual { position: relative; z-index: 2; display: flex; justify-content: center; }
+
+.ab__stage {
+  position: relative;
+  width: min(100%, 52rem);
+  aspect-ratio: 1 / 1;
+  opacity: 0;
+  transform: scale(0.92);
+  transition: opacity 1.4s 0.2s var(--ease), transform 1.6s 0.2s var(--ease);
+}
+.is-in .ab__stage { opacity: 1; transform: none; }
+
+/* the picture: floats + follows the mouse */
+.ab__float {
+  position: absolute;
+  inset: 4%;
+  z-index: 2;
+  translate: calc(var(--mx) * -14px) calc(var(--my) * -10px);
+  transition: translate 0.7s var(--ease);
+  animation: ab-float 7s ease-in-out infinite;
+}
+.ab__img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  user-select: none;
+  /* soft edge so the picture melts into the black */
+  -webkit-mask-image: radial-gradient(closest-side, #000 82%, transparent 100%);
+  mask-image: radial-gradient(closest-side, #000 82%, transparent 100%);
+}
+.ab__ph {
+  height: 100%;
+  display: grid;
+  place-items: center;
+  border: 1px dashed rgba(255, 255, 255, 0.25);
+  border-radius: 1rem;
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 1rem;
+  letter-spacing: 0.1em;
+}
+
+/* orbit lines: one layer behind the picture, one (lower half only) in front */
+.ab__orbits {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+  translate: calc(var(--mx) * 8px) calc(var(--my) * 6px);
+  transition: translate 0.7s var(--ease);
+}
+.ab__orbits.is-back  { z-index: 1; }
+.ab__orbits.is-front { z-index: 3; }
+
+.ab__ring { fill: none; stroke: rgba(214, 255, 50, 0.45); stroke-width: 1; }
+.ab__flow {
+  fill: none;
+  stroke: var(--lime);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-dasharray: 90 700;
+  animation: ab-flow linear infinite;
+  filter: drop-shadow(0 0 4px rgba(214, 255, 50, 0.8));
+}
+.ab__dot  { fill: #fff; filter: drop-shadow(0 0 6px var(--lime)); }
+.ab__halo { fill: rgba(214, 255, 50, 0.18); }
+
+/* twinkling 4-point sparkles */
+.ab__spark {
+  position: absolute;
+  z-index: 4;
+  width: 1.7rem;
+  height: 1.7rem;
+  background: var(--lime);
+  clip-path: polygon(50% 0, 62% 38%, 100% 50%, 62% 62%, 50% 100%, 38% 62%, 0 50%, 38% 38%);
+  animation: ab-twinkle 3.2s ease-in-out infinite;
+  filter: drop-shadow(0 0 8px rgba(214, 255, 50, 0.7));
+  pointer-events: none;
+}
+.ab__spark--a { top: 12%; left: 46%; }
+.ab__spark--b { top: 44%; left: 4%; width: 2.4rem; height: 2.4rem; animation-delay: 1s; }
+.ab__spark--c { bottom: 18%; right: 6%; width: 1.3rem; height: 1.3rem; animation-delay: 2s; }
+
+/* handwritten role, top-right */
+.ab__role {
+  position: absolute;
+  z-index: 4;
+  top: 0;
+  right: 2%;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  font-family: "Caveat", "Comic Sans MS", cursive;
+  font-size: clamp(1.2rem, 2vw, 2rem);
+  line-height: 1.05;
+  color: var(--lime);
+  transform: rotate(-8deg);
+  opacity: 0;
+  transition: opacity 1s 1.2s ease;
+}
+.ab__role span:nth-child(2) { margin-left: 0.8em; }
+.ab__role span:nth-child(3) { margin-left: 1.4em; }
+.is-in .ab__role { opacity: 1; }
+
+/* ---------- Small texts ---------- */
+.ab__based {
+  position: absolute;
+  z-index: 4;
+  right: clamp(0.6rem, 1.4vw, 1.4rem);
+  top: 50%;
+  margin: 0;
+  writing-mode: vertical-rl;
+  font-size: 0.62rem;
+  letter-spacing: 0.4em;
+  color: rgba(255, 255, 255, 0.5);
+  transform: translateY(-50%);
+}
+
+.ab__tag {
+  position: absolute;
+  z-index: 4;
+  right: clamp(1.2rem, 4vw, 4rem);
+  bottom: clamp(1.2rem, 5vh, 3rem);
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35em;
+  font-size: clamp(0.62rem, 0.8vw, 0.78rem);
+  letter-spacing: 0.34em;
+  color: rgba(255, 255, 255, 0.55);
+}
+.ab__tag b { display: block; width: 2.4rem; height: 1px; margin-top: 0.4rem; background: rgba(255, 255, 255, 0.55); }
+
+/* ---------- Keyframes ---------- */
+@keyframes ab-float {
+  0%, 100% { transform: translateY(0) rotate(0); }
+  50%      { transform: translateY(-14px) rotate(0.6deg); }
+}
+@keyframes ab-flow { to { stroke-dashoffset: -790; } }
+@keyframes ab-twinkle {
+  0%, 100% { transform: scale(0.7) rotate(0);  opacity: 0.55; }
+  50%      { transform: scale(1.15) rotate(45deg); opacity: 1; }
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 1100px) {
+  .ab__tag { display: none; }
+}
+
+/* tablet portrait + phones: stack */
+@media (max-width: 900px) {
+  .ab {
+    grid-template-columns: 1fr;
+    align-content: start;
+    gap: 0;
+    padding-top: clamp(5rem, 11vh, 6.5rem);
+  }
+  .ab__title { font-size: clamp(3.4rem, 15vw, 8rem); }
+  .ab__ar { font-size: clamp(3rem, 15vw, 7rem); margin-bottom: 0.5rem; }
+  .ab { min-height: auto; padding-bottom: 2.5rem; }
+  .ab__visual { padding-top: 3.2rem; }
+  .ab__stage { width: min(100%, 38rem); margin-top: -1rem; }
+  .ab__based { display: none; }
+  .ab__role { right: 4%; top: 2%; }
+}
+
+@media (max-width: 480px) {
+  .ab { padding-inline: 1rem; }
+  .ab__title { font-size: 16.5vw; }
+  .ab__ar { font-size: 16vw; }
+  .ab__role { font-size: 1.1rem; }
+  .ab__spark--b { display: none; }
+}
+
+/* short landscape screens: keep two columns */
+@media (max-height: 560px) and (orientation: landscape) {
+  .ab { grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); padding-top: 4.5rem; }
+  .ab__title { font-size: clamp(2.4rem, 11vh, 5rem); }
+  .ab__ar { font-size: clamp(2rem, 9vh, 4rem); }
+  .ab__stage { width: min(100%, 88vh); margin-top: 0; }
+  .ab__tag, .ab__based { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ab *, .ab *::before { animation: none !important; transition-duration: 0.01ms !important; transition-delay: 0s !important; }
+  .ab__line > span, .ab__stage, .ab__role { transform: none; opacity: 1; }
+  .ab__ar > span { clip-path: none; filter: none; }
+}

@@ -1,0 +1,136 @@
+@import url("https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500&display=swap");
+
+.as2 {
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.75fr);
+  align-items: center;
+  gap: clamp(2rem, 5vw, 6rem);
+  padding: clamp(0.5rem, 2vh, 1.5rem) clamp(1.2rem, 5vw, 6rem) clamp(3rem, 8vh, 6rem);
+  overflow: hidden;
+  background: #000;
+  color: #fff;
+  font-family: "Times New Roman", Times, serif;
+}
+
+/* ---------- big dim statement ---------- */
+.as2__big {
+  margin: 0;
+  font-family: "Oswald", "Arial Narrow", Impact, sans-serif;
+  font-weight: 500;
+  font-size: clamp(2.8rem, 8.4vw, 10.5rem);
+  line-height: 1.02;
+  letter-spacing: 0.005em;
+  color: #3a3a3a;
+  text-transform: uppercase;
+}
+.as2__row { display: block; width: max-content; max-width: 100%; }
+.as2__row:nth-child(2),
+.as2__row:nth-child(3) { margin-left: 0.78em; }
+
+/* every piece of text: fades in while sliding/wiping from the left to the right */
+.as2__row > span,
+.as2__fade {
+  display: block;
+  opacity: 0;
+  transform: translateX(-2.2rem);
+  clip-path: inset(0 100% 0 0);
+  transition:
+    opacity 1s var(--ease),
+    transform 1.2s var(--ease),
+    clip-path 1.3s var(--ease);
+  transition-delay: var(--d, 0s);
+}
+.is-in .as2__row > span,
+.is-in .as2__fade {
+  opacity: 1;
+  transform: none;
+  clip-path: inset(-0.2em -0.5em -0.2em -0.5em);
+}
+
+/* ---------- right copy ---------- */
+.as2__copy { max-width: 30rem; }
+.as2__block + .as2__block { margin-top: clamp(1.6rem, 4vh, 2.6rem); }
+
+.as2__title {
+  margin: 0 0 0.7rem;
+  font-family: "Oswald", "Arial Narrow", Impact, sans-serif;
+  font-weight: 300;
+  font-size: clamp(1.5rem, 2.3vw, 2.3rem);
+  line-height: 1.1;
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+}
+.as2__text {
+  margin: 0;
+  font-size: clamp(0.82rem, 0.95vw, 1rem);
+  line-height: 1.85;
+  color: rgba(255, 255, 255, 0.62);
+}
+
+.as2__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 1.4rem;
+  margin-top: clamp(1.6rem, 4vh, 2.4rem);
+  padding-bottom: 0.45rem;
+  color: #fff;
+  text-decoration: none;
+  font-size: 0.66rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.55);
+  transition-property: opacity, transform, clip-path, border-color, gap;
+}
+.as2__link i {
+  display: block;
+  width: 0.45rem;
+  height: 0.45rem;
+  background: #bcd0ff;
+  transition: transform 0.5s var(--ease);
+}
+.as2__link:hover { gap: 2rem; border-color: #fff; }
+.as2__link:hover i { transform: rotate(45deg) scale(1.2); }
+.as2__link:focus-visible { outline: 1px solid #fff; outline-offset: 6px; }
+
+/* ---------- Responsive ---------- */
+@media (min-width: 1800px) {
+  .as2 { max-width: 2200px; margin-inline: auto; }
+}
+
+@media (max-width: 1100px) {
+  .as2 { grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr); gap: 2.4rem; }
+  .as2__big { font-size: clamp(2.4rem, 8vw, 6rem); }
+}
+
+/* tablets & phones: statement on top, copy below */
+@media (max-width: 860px) {
+  .as2 {
+    grid-template-columns: 1fr;
+    align-content: center;
+    gap: clamp(2rem, 6vh, 3.2rem);
+    padding: 0.5rem clamp(1.2rem, 5vw, 6rem) clamp(3rem, 8vh, 5rem);
+  }
+  .as2__big { font-size: clamp(3rem, 14.5vw, 7.5rem); }
+  .as2__copy { max-width: 36rem; }
+  .as2__title { font-size: clamp(1.5rem, 5.4vw, 2.1rem); }
+  .as2__text { font-size: clamp(0.9rem, 2.6vw, 1rem); }
+}
+
+@media (max-width: 420px) {
+  .as2 { padding-inline: 1.1rem; }
+  .as2__big { font-size: 14.2vw; }
+  .as2__row:nth-child(2),
+  .as2__row:nth-child(3) { margin-left: 0.55em; }
+}
+
+@media (max-height: 520px) and (orientation: landscape) {
+  .as2 { grid-template-columns: 1.15fr 0.85fr; padding-block: 1rem 3rem; }
+  .as2__big { font-size: clamp(2rem, 13vh, 4.5rem); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .as2__row > span, .as2__fade { transition: none; opacity: 1; transform: none; clip-path: none; }
+}

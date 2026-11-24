@@ -1,0 +1,43 @@
+@import url("https://fonts.googleapis.com/css2?family=Oswald:wght@600;700&display=swap");
+
+.sec2 {
+  position: relative;
+  background: #000;
+}
+
+/* stays pinned while you scroll through the section */
+.sec2__stage {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background: #000;
+}
+
+.sec2__title {
+  margin: 0;
+  text-align: center;
+  font-family: "Oswald", "Anton", Impact, "Arial Narrow", sans-serif;
+  font-weight: 700;
+  font-size: clamp(3.4rem, 9vw, 8.5rem);
+  line-height: 1.5;
+  text-transform: uppercase;
+  color: #fff;
+}
+
+/* every word starts invisible; scrolling switches them on one by one,
+   and each one then takes --fade seconds (1s by default) to reach full opacity */
+.sec2__word {
+  display: block;
+  opacity: 0;
+  transition: opacity var(--fade, 1s) ease;
+}
+.sec2__word.is-on {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sec2__word { transition: none; }
+}

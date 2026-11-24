@@ -1,0 +1,162 @@
+@import url("https://fonts.googleapis.com/css2?family=Oswald:wght@600;700&display=swap");
+
+.sec3 {
+  --lime: #d6ff32;
+  --top: clamp(2.5rem, 9vh, 5.5rem);   /* where the first card pins */
+  --step: clamp(2.4rem, 7vh, 3.6rem);  /* how much of the card underneath still shows */
+  --ratio: 1.6; /* card width / height, set from your images */
+  --n: 3; /* number of cards, set from the component */
+  --gap-all: 1.1rem; /* space between the stack and "ALL PROJECTS" */
+  /* the card is as big as possible while the WHOLE stack (all layers)
+     plus the ALL PROJECTS link still fit on one screen */
+  --w: min(
+    66vw,
+    1100px,
+    calc((100vh - var(--top) - (var(--n) - 1) * var(--step) - 7.5rem) * var(--ratio)),
+    calc(58vh * var(--ratio))
+  );
+
+  position: relative;
+  background: #000;
+  padding: 8vh 0 12vh;
+}
+
+/* ---------- stacked cards ---------- */
+.sec3__stack::after {
+  /* once all cards are stacked, they stay pinned like this while you scroll this much more */
+  content: "";
+  display: block;
+  height: 55vh;
+}
+
+.sec3__card {
+  position: sticky;
+  top: calc(var(--top) + var(--i) * var(--step));
+  display: block;
+  width: var(--w);
+  aspect-ratio: var(--ratio);
+  /* the negative bottom margin lets each layer leave at its own offset,
+     so the stack scrolls away as one piece instead of squashing together */
+  margin: 0 auto calc(var(--i) * var(--step) * -1);
+  overflow: hidden;
+  background: #111;
+  border-radius: 8px 8px 0 0;
+  text-decoration: none;
+  outline-offset: 4px;
+}
+.sec3__card + .sec3__card {
+  margin-top: 16vh; /* scroll distance between one card and the next */
+}
+.sec3__card:focus-visible {
+  outline: 2px solid var(--lime);
+}
+
+.sec3__card img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  user-select: none;
+  transition: transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.sec3__card:hover img {
+  transform: scale(1.03);
+}
+
+.sec3__missing {
+  display: grid;
+  place-items: center;
+  height: 100%;
+  padding: 1rem;
+  text-align: center;
+  color: #777;
+  font-family: "Oswald", sans-serif;
+  letter-spacing: 0.04em;
+}
+
+/* ---------- ALL PROJECTS → ---------- */
+.sec3__all {
+  /* pinned just under the last card of the stack */
+  position: sticky;
+  top: calc(var(--top) + (var(--n) - 1) * var(--step) + var(--w) / var(--ratio) + var(--gap-all));
+  /* (the last card has a negative bottom margin, so push the link down by the same amount) */
+  margin-top: calc((var(--n) - 1) * var(--step) + var(--gap-all));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35em;
+  padding: 0.2rem 1rem;
+  color: var(--lime);
+  text-decoration: none;
+  text-transform: uppercase;
+  font-family: "Oswald", "Anton", Impact, "Arial Narrow", sans-serif;
+  font-weight: 600;
+  font-size: clamp(1.7rem, 4.2vw, 3.4rem);
+  line-height: 1;
+}
+.sec3__all:focus-visible {
+  outline: 2px solid var(--lime);
+  outline-offset: 6px;
+}
+
+.sec3__arrow {
+  width: 1.05em;
+  height: auto;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.sec3__all:hover .sec3__arrow,
+.sec3__all:focus-visible .sec3__arrow {
+  transform: translateX(0.25em);
+}
+
+/* ---------- breakpoints ---------- */
+@media (max-width: 1024px) {
+  .sec3 {
+    --w: min(
+      78vw,
+      900px,
+      calc((100vh - var(--top) - (var(--n) - 1) * var(--step) - 7rem) * var(--ratio)),
+      calc(58vh * var(--ratio))
+    );
+  }
+}
+
+/* phones */
+@media (max-width: 700px) {
+  .sec3 {
+    --top: clamp(1.5rem, 6vh, 3rem);
+    --step: clamp(1.6rem, 5vh, 2.4rem);
+    --gap-all: 0.8rem;
+    --w: min(
+      90vw,
+      calc((100vh - var(--top) - (var(--n) - 1) * var(--step) - 6rem) * var(--ratio))
+    );
+    padding-top: 6vh;
+  }
+  .sec3__card + .sec3__card {
+    margin-top: 12vh;
+  }
+  .sec3__card {
+    border-radius: 6px 6px 0 0;
+  }
+  .sec3__all {
+    font-size: clamp(1.5rem, 7.4vw, 2.2rem);
+  }
+}
+
+/* short windows (laptops with toolbars, landscape phones) */
+@media (max-height: 560px) {
+  .sec3 {
+    --top: 1rem;
+    --step: 1.4rem;
+    --gap-all: 0.6rem;
+  }
+  .sec3__all {
+    font-size: 1.5rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sec3__card img,
+  .sec3__arrow { transition: none; }
+}

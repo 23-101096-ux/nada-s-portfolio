@@ -1,0 +1,144 @@
+@import url("https://fonts.googleapis.com/css2?family=Oswald:wght@300;400&family=Open+Sans:wght@400;600&display=swap");
+
+.as4 {
+  --lime: #d6ff32;
+  --line: rgba(255, 255, 255, 0.14);
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+
+  position: relative;
+  padding: clamp(2.5rem, 7vh, 5rem) clamp(1.2rem, 5vw, 6rem) clamp(3rem, 9vh, 6rem);
+  background: #000;
+  color: #fff;
+  font-family: "Times New Roman", Times, serif;
+  overflow: hidden;
+}
+
+.as4__list { max-width: 1500px; margin-inline: auto; }
+
+/* ---------- rows ---------- */
+.as4__row {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(8rem, 0.7fr) minmax(0, 2fr) minmax(0, 1.7fr);
+  align-items: center;
+  gap: clamp(1rem, 3vw, 3rem);
+  padding: clamp(1.4rem, 3.2vh, 2rem) 0;
+}
+/* line that draws from the left */
+.as4__row::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: var(--line);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 1.3s var(--ease);
+  transition-delay: calc(var(--i) * 0.18s);
+}
+.is-in .as4__row::before { transform: scaleX(1); }
+
+.as4__label,
+.as4__title,
+.as4__text {
+  margin: 0;
+  opacity: 0;
+  transform: translateY(1.6rem);
+  transition: opacity 0.9s var(--ease), transform 1.1s var(--ease);
+}
+.as4__label { transition-delay: calc(0.25s + var(--i) * 0.18s); }
+.as4__title { transition-delay: calc(0.33s + var(--i) * 0.18s); }
+.as4__text  { transition-delay: calc(0.41s + var(--i) * 0.18s); }
+.is-in .as4__label,
+.is-in .as4__title,
+.is-in .as4__text { opacity: 1; transform: none; }
+
+.as4__label {
+  font-family: "Open Sans", Arial, sans-serif;
+  font-size: clamp(0.62rem, 0.75vw, 0.76rem);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--lime);
+}
+.as4__title {
+  font-family: "Oswald", "Arial Narrow", Impact, sans-serif;
+  font-weight: 300;
+  font-size: clamp(1.2rem, 1.7vw, 1.75rem);
+  line-height: 1.2;
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+}
+.as4__text {
+  font-size: clamp(0.82rem, 0.95vw, 1rem);
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+/* ---------- buttons ---------- */
+.as4__actions {
+  max-width: 1500px;
+  margin: clamp(2.4rem, 7vh, 4.5rem) auto 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+  opacity: 0;
+  transform: translateY(1.6rem);
+  transition: opacity 0.9s var(--ease), transform 1.1s var(--ease);
+  transition-delay: calc(0.3s + var(--i) * 0.18s);
+}
+.is-in .as4__actions { opacity: 1; transform: none; }
+
+.as4__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.8rem;
+  padding: 1.05rem 1.3rem;
+  font-family: "Open Sans", Arial, sans-serif;
+  font-weight: 600;
+  font-size: 0.7rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border: 1px solid transparent;
+  transition: background 0.4s ease, color 0.4s ease, border-color 0.4s ease, gap 0.5s var(--ease);
+}
+.as4__btn i {
+  display: block;
+  width: 0.5rem;
+  height: 0.5rem;
+  border: 1px solid currentColor;
+  transition: transform 0.5s var(--ease);
+}
+.as4__btn:hover { gap: 2.4rem; }
+.as4__btn:hover i { transform: rotate(45deg); }
+.as4__btn:focus-visible { outline: 1px solid #fff; outline-offset: 4px; }
+
+.as4__btn--solid { background: var(--lime); color: #000; }
+.as4__btn--solid:hover { background: #fff; }
+.as4__btn--line { color: #fff; border-color: rgba(255, 255, 255, 0.22); }
+.as4__btn--line:hover { background: #fff; color: #000; border-color: #fff; }
+
+/* ---------- Responsive ---------- */
+@media (max-width: 1000px) {
+  .as4__row { grid-template-columns: minmax(7rem, 0.8fr) minmax(0, 2fr); row-gap: 0.5rem; }
+  .as4__text { grid-column: 2; }
+}
+
+/* tablets / phones: stack label, title, text */
+@media (max-width: 640px) {
+  .as4 { padding-inline: 1.1rem; }
+  .as4__row { grid-template-columns: 1fr; gap: 0.55rem; padding: 1.5rem 0; }
+  .as4__text { grid-column: auto; }
+  .as4__title { font-size: clamp(1.25rem, 6vw, 1.6rem); }
+  .as4__text { font-size: 0.92rem; }
+  .as4__actions { flex-direction: column; margin-top: 2rem; }
+  .as4__btn { width: 100%; padding-block: 1.15rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .as4__row::before { transform: none; transition: none; }
+  .as4__label, .as4__title, .as4__text, .as4__actions { transition: none; opacity: 1; transform: none; }
+}

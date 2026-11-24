@@ -1,0 +1,109 @@
+@import url("https://fonts.googleapis.com/css2?family=Anton&display=swap");
+
+.tr {
+  position: relative;
+  background: #000;
+}
+
+/* stays pinned while you scroll through the section */
+.tr__stage {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;
+  background: #000;
+}
+
+/* the hero lives here, underneath the tiles */
+.tr__content {
+  position: absolute;
+  inset: 0;
+}
+
+/* tiles sit on top but never block the mouse (keeps the hero parallax working) */
+.tr__grid {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  pointer-events: none;
+  opacity: 0; /* stays hidden until every image has loaded */
+  transition: opacity 0.4s ease;
+}
+.tr__grid.is-ready { opacity: 1; }
+
+/* this layer scales (zoom); tiles are positioned from its centre by JS */
+.tr__grid-inner {
+  position: absolute;
+  inset: 0;
+  transform-origin: 50% 50%;
+  will-change: transform;
+}
+
+.tr__tile {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  background-color: #161616; /* shown while an image loads */
+  background-size: cover;
+  background-position: center;
+  will-change: transform;
+  backface-visibility: hidden;
+}
+
+/* optional headline that stays on top of the tiles */
+.tr__headline {
+  position: absolute;
+  inset: 0;
+  z-index: 11;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  pointer-events: none;
+  font-family: "Anton", Impact, "Arial Narrow", sans-serif;
+  font-weight: 400;
+  font-size: clamp(3rem, 9vw, 9rem);
+  line-height: 1;
+  text-transform: uppercase;
+  color: #fff;
+}
+
+/* "Scroll" hint with a small line that keeps travelling down */
+.tr__hint {
+  position: absolute;
+  z-index: 12;
+  left: 50%;
+  bottom: clamp(1rem, 3.5vh, 2rem);
+  transform: translateX(-50%);
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+  color: rgba(255, 255, 255, 0.7);
+  font-family: "Times New Roman", Times, serif;
+  font-size: 0.8rem;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  pointer-events: none;
+}
+
+.tr__hint::after {
+  content: "";
+  width: 1px;
+  height: 2.2rem;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0));
+  transform-origin: top;
+  animation: tr-line 1.8s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+}
+
+@keyframes tr-line {
+  0%   { transform: scaleY(0); }
+  55%  { transform: scaleY(1); }
+  100% { transform: scaleY(1); opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tr__hint::after { animation: none; }
+}
