@@ -22,7 +22,7 @@
 }
 
 /* ---------- Headline ---------- */
-.ab__copy { position: relative; z-index: 3; }
+.ab__copy { position: relative; z-index: 3; width: fit-content; max-width: 100%; }
 
 .ab__title {
   margin: 0;
@@ -42,18 +42,27 @@
 }
 .is-in .ab__line > span { transform: none; }
 
-/* Arabic "who am I?" — grey, tilted, overlaps the last line */
+/* Arabic "who am I?" — a lime shape with a black outline, overlapping the last line.
+   --ar-overlap: how far it climbs onto "FEEL REAL." (raise it to overlap more) */
 .ab__ar {
-  margin: -0.35em 0 0 0.1em;
-  width: max-content;
-  font-family: "Jameel Noori", "Noto Nastaliq Urdu", serif;
-  font-size: clamp(3rem, 7.4vw, 8rem);
-  line-height: 1.5;
-  color: #7d7d7d;
-  transform: rotate(-6deg);
-  transform-origin: left center;
+  --ar-overlap: 12%;
+  margin: calc(var(--ar-overlap) * -1) 0 0 6%;
+  width: 80%;
   position: relative;
   z-index: 2;
+}
+.ab__ar svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+.ab__ar path {
+  fill: var(--lime);
+  stroke: #000;
+  stroke-width: 90; /* the shape is ~4300 units wide, so 90 = a thin black outline */
+  stroke-linejoin: round;
+  paint-order: stroke;
 }
 .ab__ar > span {
   display: block;
@@ -225,7 +234,7 @@
     padding-top: clamp(5rem, 11vh, 6.5rem);
   }
   .ab__title { font-size: clamp(3.4rem, 15vw, 8rem); }
-  .ab__ar { font-size: clamp(3rem, 15vw, 7rem); margin-bottom: 0.5rem; }
+  .ab__ar { margin-bottom: 0.5rem; }
   .ab { min-height: auto; padding-bottom: 2.5rem; }
   .ab__visual { padding-top: 3.2rem; }
   .ab__stage { width: min(100%, 38rem); margin-top: -1rem; }
@@ -236,7 +245,6 @@
 @media (max-width: 480px) {
   .ab { padding-inline: 1rem; }
   .ab__title { font-size: 16.5vw; }
-  .ab__ar { font-size: 16vw; }
   .ab__role { font-size: 1.1rem; }
   .ab__spark--b { display: none; }
 }
@@ -245,7 +253,6 @@
 @media (max-height: 560px) and (orientation: landscape) {
   .ab { grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); padding-top: 4.5rem; }
   .ab__title { font-size: clamp(2.4rem, 11vh, 5rem); }
-  .ab__ar { font-size: clamp(2rem, 9vh, 4rem); }
   .ab__stage { width: min(100%, 88vh); margin-top: 0; }
   .ab__tag, .ab__based { display: none; }
 }

@@ -2,6 +2,8 @@ import AboutHero from "../components/AboutHero";
 import AboutSec2 from "../components/AboutSec2";
 import AboutSec3 from "../components/AboutSec3";
 import AboutSec4 from "../components/AboutSec4";
+import AboutSec5 from "../components/AboutSec5";
+import AboutSec6 from "../components/AboutSec6";
 import Footer from "../components/Footer";
 
 export default function About() {
@@ -11,6 +13,8 @@ export default function About() {
       <AboutSec2 />
       <AboutSec3 />
       <AboutSec4 />
+      <AboutSec5 />
+      <AboutSec6 />
       <Footer />
     </>
   );

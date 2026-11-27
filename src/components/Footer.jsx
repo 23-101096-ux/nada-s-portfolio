@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { Link } from "react-router-dom";
 import "./Footer.css";
 
 /* The background picture: drop your image in src/assets and name it
@@ -20,7 +21,7 @@ try {
 
 export default function Footer({
   bg = assetBg,
-  contactHref = "#", // put your mailto: link or contact page here
+  contactTo = "/contact", // the page the Contact button opens
   nameEn = "Nada Aboelnaga",
   nameAr = "ندى أبوالنجا",
   role = "UI/UX Designer & creative developer",
@@ -150,12 +151,12 @@ export default function Footer({
           <p className="ft__role">{role}</p>
         </div>
 
-        <a className="ft__btn" href={contactHref}>
+        <Link className="ft__btn" to={contactTo}>
           <span className="ft__btn-txt">Contact</span>
-          <svg className="ft__btn-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+          <svg className="ft__btn-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
             <path d="M5 12h14M13 5l7 7-7 7" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
-        </a>
+        </Link>
       </div>
     </footer>
   );

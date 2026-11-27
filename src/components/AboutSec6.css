@@ -1,0 +1,154 @@
+@import url("https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&family=Jost:wght@200;300&display=swap");
+
+.as6 {
+  --lime: #d6ff32;
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --blob: min(23vw, 36vh);
+  --gap: clamp(1rem, 2.6vw, 2.8rem);
+  --fs: clamp(1.5rem, min(5.6vh, 4.3vw), 3.9rem);
+  --px: 0;
+  --py: 0;
+
+  position: relative;
+  height: 100vh;
+  height: 100svh;
+  min-height: 460px;
+  background: #000;
+  color: #fff;
+  overflow: hidden;
+}
+
+/* tiny labels over each column */
+.as6__labels {
+  position: absolute;
+  z-index: 4;
+  top: clamp(1.2rem, 4vh, 2.4rem);
+  left: 0;
+  right: 0;
+  display: grid;
+  grid-template-columns: 1fr var(--blob) 1fr;
+  column-gap: var(--gap);
+  padding-inline: clamp(1rem, 3vw, 3rem);
+  font-family: "Jost", "Helvetica Neue", Arial, sans-serif;
+  font-weight: 300;
+  font-size: clamp(0.58rem, 0.8vw, 0.74rem);
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  color: var(--lime);
+  opacity: 0;
+  transition: opacity 1s 0.8s ease;
+}
+.as6__labels span:first-child { text-align: right; grid-column: 1; }
+.as6__labels span:last-child { text-align: left; grid-column: 3; }
+.is-in .as6__labels { opacity: 1; }
+
+/* ---------- the two columns + blob ---------- */
+.as6__lists {
+  position: absolute;
+  inset: clamp(2.8rem, 8vh, 5rem) 0 0 0;
+  display: grid;
+  grid-template-columns: 1fr var(--blob) 1fr;
+  column-gap: var(--gap);
+  align-items: center;
+  padding-inline: clamp(1rem, 3vw, 3rem);
+  container-type: inline-size;
+}
+
+.as6__col {
+  position: relative;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 14%, #000 86%, transparent 100%);
+  mask-image: linear-gradient(180deg, transparent 0, #000 14%, #000 86%, transparent 100%);
+  opacity: 0;
+  transition: opacity 1.2s 0.2s ease, transform 1.4s 0.2s var(--ease);
+}
+.as6__col--l { text-align: right; transform: translateX(-4rem); }
+.as6__col--r { text-align: left;  transform: translateX(4rem); }
+.is-in .as6__col { opacity: 1; transform: none; }
+
+.as6__track {
+  display: flex;
+  flex-direction: column;
+  animation: as6-run var(--dur, 40s) linear infinite;
+  will-change: transform;
+}
+.as6:not(.is-in) .as6__track { animation-play-state: paused; }
+
+.as6__item {
+  flex: none;
+  font-family: "Oswald", "Arial Narrow", Impact, sans-serif;
+  font-weight: 200;
+  /* never wider than its column, even with a fallback font */
+  font-size: min(var(--fs), calc(((100cqw - var(--blob) - 2 * var(--gap)) / 2) / 7.4));
+  line-height: 1.22;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: #fff;
+  opacity: 0.55;
+}
+
+@keyframes as6-run {
+  from { transform: translateY(0); }
+  to   { transform: translateY(-50%); }
+}
+
+/* ---------- blob ---------- */
+.as6__blob {
+  position: relative;
+  z-index: 3;
+  width: var(--blob);
+  aspect-ratio: 200 / 240;
+  justify-self: center;
+  translate: calc(var(--px) * 18px) calc(var(--py) * 14px);
+  transition: translate 0.8s var(--ease);
+  opacity: 0;
+  scale: 0.7;
+  transition: opacity 1.2s 0.4s ease, scale 1.6s 0.4s var(--ease), translate 0.8s var(--ease);
+}
+.is-in .as6__blob { opacity: 1; scale: 1; }
+
+.as6__svg { display: block; width: 100%; height: 100%; overflow: visible; }
+.as6__shape { fill: var(--lime); transform-origin: 100px 120px; animation: as6-spin 50s linear infinite; }
+.as6__n path { fill: #000; }
+
+@keyframes as6-spin { to { transform: rotate(360deg); } }
+
+/* ---------- Responsive ---------- */
+@media (min-width: 1800px) {
+  .as6 { --fs: min(5.4vh, 4vw, 4.6rem); }
+}
+
+@media (max-width: 1024px) {
+  .as6 { --blob: min(26vw, 34vh); --fs: clamp(1.3rem, min(5.2vh, 4.6vw), 3rem); }
+}
+
+/* phones */
+@media (max-width: 700px) {
+  .as6 {
+    --blob: min(22vw, 24vh);
+    --gap: 0.7rem;
+    --fs: clamp(1.02rem, 4.9vw, 1.7rem);
+  }
+  .as6__lists, .as6__labels { padding-inline: 0.9rem; }
+  .as6__labels { letter-spacing: 0.22em; font-size: 0.56rem; }
+}
+
+@media (max-width: 360px) {
+  .as6 { --fs: 0.98rem; --blob: 22vw; }
+}
+
+/* short landscape screens */
+@media (max-height: 520px) and (orientation: landscape) {
+  .as6 { min-height: 0; --fs: clamp(1.1rem, 8vh, 2rem); --blob: min(18vw, 40vh); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .as6__track { animation: none; }
+  .as6__shape { animation: none; }
+  .as6__col, .as6__blob, .as6__labels { transition: none; opacity: 1; transform: none; scale: 1; }
+  .as6__item { opacity: 1; }
+}

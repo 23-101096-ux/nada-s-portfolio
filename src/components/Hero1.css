@@ -1,6 +1,6 @@
 /* ---------- Fonts ---------- */
 /* Condensed heavy face for PORTFOLIO (close to the one in your design) */
-@import url("https://fonts.googleapis.com/css2?family=Anton&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Anton&family=Jost:wght@200;300;400&display=swap");
 
 /* Jameel Noori Nastaleeq — file lives at src/assets/fonts/ */
 @font-face {
@@ -27,7 +27,7 @@
   overflow: hidden;
   background: var(--bg);
   color: var(--ink);
-  font-family: "Times New Roman", Times, serif;
+  font-family: "Jost", "Helvetica Neue", Arial, sans-serif;
 }
 
 /* hero animations wait until the intro says go */
@@ -124,7 +124,9 @@
   font-size: clamp(4rem, 13vw, 17rem);
   line-height: 1.6;
   color: var(--ink);
-  text-shadow: 0 0 40px rgba(0, 0, 0, 0.55);
+  -webkit-text-stroke: clamp(3px, 0.45vw, 8px) #000;
+  paint-order: stroke fill;
+  text-shadow: none;
 }
 
 .hero__name > span {

@@ -1,0 +1,200 @@
+@import url("https://fonts.googleapis.com/css2?family=Oswald:wght@700&family=Jost:wght@200;300;400&display=swap");
+
+@font-face {
+  font-family: "Jameel Noori";
+  src: url("../assets/fonts/Jamil-nory.ttf") format("truetype");
+  font-display: swap;
+}
+
+.pc {
+  --lime: #d6ff32;
+  --cw: clamp(130px, min(22vw, 30vh), 340px);              /* card width  */
+  --ch: calc(var(--cw) * 1.4);                     /* card height */
+  --gap: calc(var(--cw) * 0.2);                 /* space between cards */
+  --fill: calc(1 / 1.2);                        /* share of the ring a card covers (rest = gap) */
+  /* radius of the ring so that n cards + gaps fit exactly */
+  --R: calc((var(--cw) + var(--gap)) / 2 / tan(calc(180deg / var(--n))));
+  --sa: calc(360deg / var(--n));                 /* angle between cards */
+  --sw: calc(var(--cw) / var(--s));              /* width of one strip */
+
+  position: relative;
+  min-height: 100vh;
+  min-height: 100svh;
+  background: #000;
+  color: #fff;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: 3rem;
+  cursor: grab;
+  touch-action: pan-y;
+  user-select: none;
+  -webkit-user-select: none;
+  outline: none;
+}
+.pc.is-drag { cursor: grabbing; }
+
+/* ---------- title ---------- */
+.pc__title {
+  position: relative;
+  z-index: 5; /* in front: the Arabic word sits on top of the carousel, like the reference */
+  margin: clamp(4rem, 8vh, 5.5rem) 0 calc(var(--ch) * -0.3);
+  display: grid;
+  justify-items: center;
+  pointer-events: none;
+}
+.pc__en {
+  font-family: "Oswald", "Anton", Impact, "Arial Narrow", sans-serif;
+  font-weight: 700;
+  font-size: clamp(3rem, min(9.5vw, 13vh), 9rem);
+  line-height: 1;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+}
+.pc__ar {
+  margin-top: -0.8em;            /* sits on top of the English words */
+  font-family: "Jameel Noori", "Noto Nastaliq Urdu", sans-serif;
+  font-size: clamp(6.5rem, min(6.6vw, 9.2vh), 6rem);
+  line-height: 1.5;
+  color: var(--lime);
+  -webkit-text-stroke: clamp(1.5px, 0.18vw, 3px) #000;
+  paint-order: stroke fill;
+}
+
+/* ---------- 3D scene ---------- */
+.pc__scene {
+  position: relative;
+  z-index: 2;
+  flex: none;
+  width: 100%;
+  height: calc(var(--ch) * 1.4);
+  margin-top: clamp(0.5rem, 2vh, 1.5rem);
+  display: grid;
+  place-items: center;
+  perspective: 2400px;
+  perspective-origin: 50% 38%;
+}
+
+.pc__ring {
+  position: relative;
+  width: var(--cw);
+  height: var(--ch);
+  transform-style: preserve-3d;
+  transform: translateY(-4%) translateZ(calc(var(--R) * -1)) rotateX(-5deg) rotateY(var(--rot, 0deg));
+}
+
+.pc__card {
+  position: absolute;
+  inset: 0;
+  display: block;
+  transform-style: preserve-3d;
+  transform: rotateY(calc(var(--i) * var(--sa)));
+  text-decoration: none;
+  color: inherit;
+  -webkit-user-drag: none;
+}
+
+/* each strip sits on the ring, turned a little further than the one before: that is the bend */
+.pc__slice {
+  position: absolute;
+  top: 0;
+  left: calc(50% - var(--sw) / 2);
+  width: calc(var(--sw) + 2px); /* strips overlap a little so no seams show between them */
+  height: 100%;
+  background-size: calc(var(--sw) * var(--s)) 100%;
+  background-position: calc(var(--j) * var(--sw) * -1) 0;
+  background-repeat: no-repeat;
+  transform:
+    rotateY(calc((var(--j) - (var(--s) - 1) / 2) * var(--sa) * var(--fill) / var(--s)))
+    translateZ(var(--R));
+  backface-visibility: visible;
+  filter: brightness(var(--b, 0.5));
+}
+/* the first and last strip get rounded corners, so the card keeps its shape */
+.pc__slice:first-of-type { border-radius: 14px 0 0 14px; }
+.pc__slice:last-of-type { border-radius: 0 14px 14px 0; }
+
+.pc__card.is-front .pc__slice {
+  filter: brightness(1.03);
+  box-shadow: inset 0 0.5px 0 rgba(214,255,50,.28), inset 0 -0.5px 0 rgba(214,255,50,.28);
+}
+.pc__card.is-front .pc__slice:first-of-type { box-shadow: inset 0 0.5px 0 rgba(214,255,50,.28), inset 0 -0.5px 0 rgba(214,255,50,.28), inset 0.5px 0 0 rgba(214,255,50,.28); }
+.pc__card.is-front .pc__slice:last-of-type { box-shadow: inset 0 0.5px 0 rgba(214,255,50,.28), inset 0 -0.5px 0 rgba(214,255,50,.28), inset -0.5px 0 0 rgba(214,255,50,.28); }
+
+i.pc__shadow {
+  /* a soft shadow lying on the floor in front of each card */
+  position: absolute;
+  left: 50%;
+  top: 100%;
+  width: calc(var(--cw) * 1.05);
+  height: calc(var(--cw) * 0.34);
+  transform-origin: 50% 0;
+  transform: translateZ(var(--R)) translateX(-50%) rotateX(90deg);
+  background: radial-gradient(ellipse at 50% 0%, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.55) 40%, rgba(0, 0, 0, 0) 72%);
+  filter: blur(6px);
+  opacity: var(--b, 0.5);
+  pointer-events: none;
+}
+
+
+/* ---------- the glowing floor ring ---------- */
+.pc__floor {
+  position: absolute;
+  left: 50%;
+  top: calc(50% + var(--ch) * 0.42 - min(var(--R) * 2.5, 96vw) / 12);
+  width: min(calc(var(--R) * 2.5), 96vw); /* never wider than the screen */
+  aspect-ratio: 6 / 1;
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+.pc__floor svg { width: 100%; height: 100%; overflow: visible; }
+.pc__dots { position: absolute; inset: 0; }
+.pc__dots i {
+  position: absolute;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--lime);
+  box-shadow: 0 0 14px 3px rgba(214, 255, 50, 0.7);
+  /* the two dots travel round the ellipse with the ring */
+  left: calc(50% + 48% * cos(var(--rot, 0deg)) - 4.5px);
+  top: calc(50% + 43% * sin(var(--rot, 0deg)) - 4.5px);
+}
+.pc__dots i:nth-child(2) {
+  left: calc(50% - 48% * cos(var(--rot, 0deg)) - 4.5px);
+  top: calc(50% - 43% * sin(var(--rot, 0deg)) - 4.5px);
+}
+
+.pc__hint {
+  position: absolute;
+  bottom: clamp(1rem, 4vh, 2.2rem);
+  margin: 0;
+  font-family: "Jost", "Helvetica Neue", Arial, sans-serif;
+  font-weight: 300;
+  font-size: 0.72rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.45);
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 1024px) {
+  .pc { --cw: clamp(120px, min(28vw, 30vh), 280px); }
+}
+@media (max-width: 700px) {
+  .pc { --cw: 38vw; --gap: calc(var(--cw) * 0.14); justify-content: flex-start; padding-top: 19vh; }
+  .pc__ar { font-size: clamp(3rem, 15vw, 4.2rem); }
+  .pc__scene { perspective: 1500px; }
+  .pc__floor { width: 96vw; top: calc(50% + var(--ch) * 0.42 - 96vw / 12); }
+  .pc__ring { transform: translateY(-2%) translateZ(calc(var(--R) * -1)) rotateX(-4deg) rotateY(var(--rot, 0deg)); }
+}
+@media (max-height: 560px) and (orientation: landscape) {
+  .pc { --cw: 30vh; }
+  .pc__title { margin-top: 3.5rem; }
+  .pc__en { font-size: clamp(2rem, 15vh, 4rem); }
+  .pc__ar { font-size: clamp(1.8rem, 12vh, 3.2rem); }
+}
+@media (prefers-reduced-motion: reduce) {
+}

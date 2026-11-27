@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import "./Homesec3.css";
 
 /*
@@ -53,8 +53,35 @@ export default function HomeSec3({
     return () => { alive = false; };
   }, [projects]);
 
+  // slide-in from the right: a card / the link gets class "is-in" once it has
+  // scrolled up into the lower part of the screen (and loses it again if you scroll back)
+  const rootRef = useRef(null);
+  useEffect(() => {
+    const root = rootRef.current;
+    if (!root) return;
+    const items = [...root.querySelectorAll(".sec3__card, .sec3__all")];
+    let raf = 0;
+    const check = () => {
+      raf = 0;
+      const vh = window.innerHeight;
+      items.forEach((el) => {
+        const top = el.getBoundingClientRect().top; // not affected by the sideways move
+        el.classList.toggle("is-in", top < vh * (el.classList.contains("sec3__all") ? 0.95 : 0.82));
+      });
+    };
+    const onScroll = () => { if (!raf) raf = requestAnimationFrame(check); };
+    check();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+      cancelAnimationFrame(raf);
+    };
+  }, [projects]);
+
   return (
-    <section className="sec3" style={{ "--ratio": ratio, "--n": projects.length }}>
+    <section className="sec3" ref={rootRef} style={{ "--ratio": ratio, "--n": projects.length }}>
       <div className="sec3__stack">
         {projects.map((p, i) => {
           const src = BY_NAME[slug(p.name)];

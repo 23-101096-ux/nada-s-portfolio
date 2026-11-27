@@ -1,0 +1,172 @@
+@import url("https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&display=swap");
+
+/*
+  Arabic font: Jameel Noori Kasheeda.
+  1) Put the font file in  src/assets/fonts/
+  2) Remove the comment marks around the block below and set the real file name.
+
+@font-face {
+  font-family: "Jameel Noori Kasheeda";
+  src: url("../assets/fonts/YOUR-KASHEEDA-FILE.ttf") format("truetype");
+  font-display: swap;
+}
+*/
+
+.as5 {
+  --bg: #000;
+  --sage: #a9b59b;
+  --lime: #a8f03c;
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+
+  position: relative;
+  min-height: 100vh;
+  min-height: 100svh;
+  display: grid;
+  place-items: center;
+  padding: clamp(5rem, 12vh, 8rem) 1.2rem clamp(4rem, 10vh, 6rem);
+  background: var(--bg);
+  overflow: hidden;
+}
+
+/* ---------- statement ---------- */
+.as5__text {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  font-family: "Oswald", "Arial Narrow", Impact, sans-serif;
+  font-weight: 700;
+  font-size: min(10.5vw, 15vh, 9.5rem);
+  line-height: 1.02;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+}
+
+.as5__line { display: block; padding: 0.02em 0.1em; }
+
+/* every line fades in from the side: 1st from the left, 2nd from the right, 3rd from the left ... then it stays still */
+.as5__word {
+  display: block;
+  opacity: 0;
+  filter: blur(14px);
+  transform: translateX(calc(var(--dir, -1) * clamp(3rem, 9vw, 9rem)));
+  transition:
+    opacity 1.3s var(--ease),
+    filter 1.3s var(--ease),
+    transform 1.5s var(--ease),
+    color 0.45s ease;
+  transition-delay: calc(0.1s + var(--i) * 0.28s), calc(0.1s + var(--i) * 0.28s), calc(0.1s + var(--i) * 0.28s), 0s;
+}
+.is-in .as5__word { opacity: 1; filter: blur(0); transform: none; }
+
+.as5__line:nth-child(odd)  .as5__word { --dir: -1; }
+.as5__line:nth-child(even) .as5__word { --dir: 1; }
+
+.as5__word--sage { color: #fff; }
+.as5__word--lime { color: var(--lime); }
+
+/* hover: white ↔ lime */
+.is-in .as5__word--sage:hover { color: var(--lime); }
+.is-in .as5__word--lime:hover { color: #fff; }
+
+/* Arabic line: big */
+.as5__word--ar {
+  font-family: "Jameel Noori Kasheeda", "Jameel Noori", "Noto Nastaliq Urdu", serif;
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: 0;
+  font-size: 1.9em;
+  line-height: 1.1;
+  margin: 0;
+  transform-origin: center;
+}
+
+/* ---------- social icons (left) ---------- */
+.as5__social {
+  position: absolute;
+  left: clamp(1rem, 2.4vw, 2.4rem);
+  bottom: clamp(1.4rem, 6vh, 3.4rem);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1.1rem, 3.2vh, 2rem);
+}
+.as5__social li {
+  opacity: 0;
+  transform: translateX(-12px);
+  transition: opacity 0.9s var(--ease), transform 0.9s var(--ease);
+  transition-delay: calc(0.9s + var(--i) * 0.1s);
+}
+.is-in .as5__social li { opacity: 1; transform: none; }
+.as5__social a { display: block; width: 1.1rem; height: 1.1rem; color: rgba(255, 255, 255, 0.78); transition: color 0.3s ease, transform 0.4s var(--ease); }
+.as5__social a:hover { color: var(--lime); transform: translateY(-3px); }
+.as5__social svg { display: block; width: 100%; height: 100%; fill: currentColor; }
+
+/* ---------- bobbing half circle (bottom right) ---------- */
+.as5__half {
+  position: absolute;
+  right: clamp(1.4rem, 5vw, 5rem);
+  bottom: clamp(1.4rem, 6vh, 3rem);
+  width: 2rem;
+  height: 1rem;
+  background: var(--lime);
+  border-radius: 0 0 2rem 2rem;
+  opacity: 0;
+  transition: opacity 0.8s 1.2s ease;
+  animation: as5-bob 2.4s ease-in-out infinite;
+}
+.is-in .as5__half { opacity: 1; }
+
+@keyframes as5-bob {
+  0%, 100% { translate: 0 0; }
+  50%      { translate: 0 -10px; }
+}
+
+/* ---------- Responsive ---------- */
+@media (min-width: 1800px) {
+  .as5__text { font-size: min(9vw, 15vh, 11rem); }
+}
+
+/* laptops with a short screen */
+@media (max-height: 880px) and (min-width: 701px) {
+  .as5__text { font-size: min(10vw, 13.5vh, 8rem); }
+}
+
+/* tablets */
+@media (max-width: 1024px) {
+  .as5__text { font-size: min(12.5vw, 12.5vh, 8rem); }
+  .as5__social { left: 1.4rem; }
+}
+
+/* phones */
+@media (max-width: 700px) {
+  .as5 { padding: 6rem 1rem 5rem; }
+  .as5__text { font-size: min(15.5vw, 11vh, 6rem); }
+  .as5__word--ar { font-size: 1.7em; }
+  /* icons go in a row at the bottom-left */
+  .as5__social { flex-direction: row; left: 1.2rem; gap: 1.5rem; bottom: 1.6rem; }
+  .as5__social li { transform: translateY(10px); }
+  .as5__half { right: 1.2rem; bottom: 1.6rem; }
+}
+
+@media (max-width: 380px) {
+  .as5__text { font-size: 15vw; }
+  .as5__word--ar { font-size: 1.55em; }
+}
+
+/* phones / tablets turned sideways (short screens) */
+@media (max-height: 520px) and (orientation: landscape) {
+  .as5 { padding: 4rem 3.5rem 2rem; }
+  .as5__text { font-size: min(8vw, 14vh, 4.4rem); }
+  .as5__word--ar { font-size: 1.6em; }
+  .as5__social { flex-direction: column; gap: 1rem; bottom: 1rem; left: 1rem; }
+  .as5__half { bottom: 1rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .as5__word, .as5__social li { transition: none; transform: none; opacity: 1; filter: none; }
+  .as5__half { animation: none; opacity: 1; }
+}

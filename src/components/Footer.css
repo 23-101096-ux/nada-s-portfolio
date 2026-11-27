@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Oswald:wght@600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Oswald:wght@600;700&family=Jost:wght@300;400&display=swap");
 
 .ft {
   --lime: #d6ff32;
@@ -152,38 +152,40 @@
   position: relative;
   display: inline-flex;
   align-items: center;
-  gap: 0.5em;
+  justify-content: center;
+  gap: 0.6em;
   margin-top: auto;
-  padding: 0.85em 1.7em;
+  padding: 0.8em 1.9em;
   overflow: hidden;
-  border-radius: 7px;
-  background: var(--lime);
-  color: #111;
-  font-family: "Times New Roman", Georgia, serif;
-  font-size: clamp(1rem, 1.5vw, 1.35rem);
-  letter-spacing: 0.03em;
+  isolation: isolate;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.25);
+  color: rgba(255, 255, 255, 0.9);
+  font-family: "Jost", "Oswald", sans-serif;
+  font-weight: 300;
+  font-size: clamp(0.75rem, 0.95vw, 0.95rem);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  white-space: nowrap;
   text-decoration: none;
   opacity: 0;
   transform: translateY(20px) scale(0.96);
-  transition: opacity 0.9s ease 1s, transform 1s var(--ease) 1s, box-shadow 0.4s ease;
+  transition: opacity 0.9s ease 1s, transform 1s var(--ease) 1s, color 0.4s ease, border-color 0.4s ease;
 }
 .ft.is-in .ft__btn {
   opacity: 1;
   transform: none;
 }
-/* white fill wipes up from the bottom */
+/* lime fill rises from the bottom (same as the header buttons) */
 .ft__btn::before {
   content: "";
   position: absolute;
   inset: 0;
-  z-index: 0;
-  background: #fff;
+  z-index: -1;
+  background: var(--lime);
   transform: translateY(101%);
-  transition: transform 0.5s cubic-bezier(0.7, 0, 0.2, 1);
-}
-.ft__btn > * {
-  position: relative;
-  z-index: 1;
+  transition: transform 0.5s var(--ease);
 }
 .ft__btn-arrow {
   width: 0;
@@ -193,11 +195,12 @@
 }
 .ft__btn:hover,
 .ft__btn:focus-visible {
-  box-shadow: 0 10px 40px rgba(214, 255, 50, 0.35);
+  color: #000;
+  border-color: var(--lime);
 }
 .ft__btn:hover::before,
 .ft__btn:focus-visible::before {
-  transform: translateY(0);
+  transform: none;
 }
 .ft__btn:hover .ft__btn-arrow,
 .ft__btn:focus-visible .ft__btn-arrow {
@@ -205,8 +208,8 @@
   opacity: 1;
 }
 .ft__btn:focus-visible {
-  outline: 2px solid #fff;
-  outline-offset: 4px;
+  outline: 1px solid rgba(255, 255, 255, 0.7);
+  outline-offset: 3px;
 }
 
 /* ---------- breakpoints ---------- */
